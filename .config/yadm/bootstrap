@@ -1,0 +1,10 @@
+#!/bin/sh
+
+echo "Updating the yadm repo origin URL"
+yadm remote set-url origin "git@github.com:yj-o/dotfiles.git"
+
+echo "add ssh key for github"
+export GPG_TTY=$(tty)
+yadm decrypt
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/gh.key

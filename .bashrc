@@ -116,3 +116,10 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+if [ -f ~/.local/bin/zoxide ]; then
+    eval "$(zoxide init bash)"
+fi
+
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
