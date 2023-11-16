@@ -6,6 +6,7 @@ if status is-interactive
     #################### source extra config ####################
     source $XDG_CONFIG_HOME/fish/aliases.fish
     source $XDG_CONFIG_HOME/fish/fncs.fish
+    source $XDG_CONFIG_HOME/fish/fzf.fish
     
     
     #################### enviroment variables ####################
