@@ -9,7 +9,7 @@ abbr -a ts 'tmux new-session -s'
 abbr -a tl 'tmux list-sessions'
 abbr -a tksv 'tmux kill-server'
 abbr -a tkss 'tmux kill-session -t'
-abbr -a yadmaddall 'yadm add -u :/'
+abbr -a yadmstage 'yadm add -u :/'
 
 
 

@@ -1,0 +1,11 @@
+# ignore list for fd under $HOME
+anaconda3/
+cache/
+bin/
+.config/
+.local
+.tmux/
+.ssh/
+.cache/
+.fzf/
+.hushlogin
