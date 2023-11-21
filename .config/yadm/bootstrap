@@ -8,3 +8,39 @@ export GPG_TTY=$(tty)
 yadm decrypt
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/gh.key
+
+echo "add extra repo"
+sudo apt-add-repository ppa:fish-shell/release-3 -y
+sudo add-apt-repository ppa:maveonair/helix-editor -y
+sudo apt update -y
+
+echo "install apps..."
+sudo apt install git -y
+sudo apt install curl -y
+sudo apt install fish -y
+sudo apt install helix -y
+sudo apt install ranger -y
+sudo apt install xsel -y
+sudo apt install tmux -y
+
+
+echo "fisher plugin"
+curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
+fisher update
+
+echo "install zoxide"
+curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
+
+echo "ranger plugin"
+git clone git@github.com:MuXiu1997/ranger-fzf-filter.git ~/.config/ranger/plugins/ranger_fzf_filter
+git clone git@github.com:jchook/ranger-zoxide.git ~/.config/ranger/plugins/zoxide
+
+echo "install fzf"
+curl -fLo $HOME/fzf_install https://raw.githubusercontent.com/junegunn/fzf/master/install && chmod a+x $HOME/fzf_install
+curl -fLo $XDG_CONFIG_HOME/bash/completion.bash https://raw.githubusercontent.com/junegunn/fzf/master/shell/completion.bash --create-dirs
+curl -fLo $XDG_CONFIG_HOME/bash/key-bindings.bash https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.bash --create-dirs
+curl -fLo $XDG_CONFIG_HOME/fish/functions/fzf_key-bindings.fish https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.fish --create-dirs
+~/fzf_install --bin
+mv ~/bin/fzf $XDG_BIN
+rm -d ~/bin
+rm ~/fzf_install
