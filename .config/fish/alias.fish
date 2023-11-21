@@ -2,6 +2,7 @@
 #  ## Useful aliases
 
 alias ra='ranger'
+abbr -a wsltime 'sudo hwclock -s'
 
 abbr -a ta 'tmux attach -t'
 abbr -a tad 'tmux attach -d -t'

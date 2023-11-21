@@ -14,3 +14,11 @@ function p -d "Go to project"
     end   
   end
 end
+
+function check_wsl
+  if uname -r | grep -q WSL #if it is wsl return true(0)
+    return 0
+  else  
+     return 1
+  end
+end
