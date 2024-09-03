@@ -1,0 +1,40 @@
+#!/bin/sh
+
+# know script fails at where
+set -e
+set -o pipefail
+
+touch bashrc.local
+
+echo "Updating the yadm repo origin URL"
+yadm remote set-url origin "git@github.com:yj-o/dotfiles.git"
+
+echo "add ssh key for github"
+export GPG_TTY=$(tty)
+yadm decrypt
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/gh.key
+
+echo "add extra repo"
+sudo apt-add-repository ppa:fish-shell/release-3 -y
+sudo add-apt-repository ppa:maveonair/helix-editor -y
+sudo apt update -y
+
+echo "install apps..."
+sudo apt install git -y
+sudo apt install curl -y
+sudo apt install micro -y
+sudo apt install net-tools -y
+
+
+echo "install zoxide"
+curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
+
+
+echo "install fzf"
+curl -fLo $HOME/fzf_install https://raw.githubusercontent.com/junegunn/fzf/master/install && chmod a+x $HOME/fzf_install
+curl -fLo $XDG_CONFIG_HOME/bash/completion.bash https://raw.githubusercontent.com/junegunn/fzf/master/shell/completion.bash --create-dirs
+curl -fLo $XDG_CONFIG_HOME/bash/key-bindings.bash https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.bash --create-dirs
+mv ~/bin/fzf $XDG_BIN
+rm -d ~/bin
+rm ~/fzf_install
