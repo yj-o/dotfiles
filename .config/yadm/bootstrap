@@ -2,7 +2,6 @@
 
 # know script fails at where
 set -e
-set -o pipefail
 
 touch bashrc.local
 
