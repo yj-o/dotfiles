@@ -1,5 +1,5 @@
-VISUAL=hx
-EDITOR=hx
+VISUAL=micro
+EDITOR=micro
 GPG_TTY=$(tty)
 XDG_CACHE_HOME=$HOME/.cache
 XDG_CONFIG_HOME=$HOME/.config
