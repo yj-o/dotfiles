@@ -3,6 +3,7 @@
 # know script fails at where
 # set -e
 
+source ~/.config/env
 touch bashrc.local
 
 echo "Updating the yadm repo origin URL"
