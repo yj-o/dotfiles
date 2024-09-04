@@ -4,7 +4,7 @@
 # set -e
 
 source ~/.config/env
-touch bashrc.local
+touch ~/.bashrc.local
 
 echo "Updating the yadm repo origin URL"
 yadm remote set-url origin "git@github.com:yj-o/dotfiles.git"
@@ -16,8 +16,6 @@ eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/gh.key
 
 echo "add extra repo"
-# sudo apt-add-repository ppa:fish-shell/release-3 -y
-# sudo add-apt-repository ppa:maveonair/helix-editor -y
 sudo apt update -y
 
 echo "install apps..."
@@ -41,3 +39,4 @@ rm ~/fzf_install
 
 echo "install zellij"
 chmod +x $HOME/.local/install/install_zellij.sh
+.$HOME/.local/install/install_zellij.sh
