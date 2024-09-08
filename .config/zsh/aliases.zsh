@@ -1,7 +1,7 @@
-ydp() {
+yap() {
     # stage all changes
     yadm add -u :/
-    
+
     # Check if a commit message is provided
     if [ -z "$1" ]; then
         # If no message is provided, use '.'
