@@ -20,8 +20,8 @@ else
 fi
 
 # Source my zshrc from config
-if ! grep -Fxq 'source "$HOME/.myzshrc"' ~/.zshrc; then
-    echo 'source "$HOME/.myzshrc"' >> ~/.zshrc
+if ! grep -Fxq 'source "$HOME/.myzsh"' ~/.zshrc; then
+    echo 'source "$HOME/.myzsh"' >> ~/.zshrc
 fi
 
 
