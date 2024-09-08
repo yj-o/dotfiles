@@ -1,11 +1,17 @@
 # ignore list for fd under $HOME
 anaconda3/
-cache/
-bin/
+.conda/
+.ipython/
+.jupyter/
+.docker/
+.oh-my-zsh/
+.vscode/
 .config/
-.local
+.local/
 .tmux/
 .ssh/
 .cache/
 .fzf/
+cache/
+bin/
 .hushlogin

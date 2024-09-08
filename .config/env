@@ -1,8 +1,13 @@
-VISUAL=micro
-EDITOR=micro
-GPG_TTY=$(tty)
-XDG_CACHE_HOME=$HOME/.cache
-XDG_CONFIG_HOME=$HOME/.config
-XDG_DATA_HOME=$HOME/.local/share
-XDG_STATE_HOME=$HOME/.local/state
-XDG_BIN=$HOME/.local/bin
+# Set GPG_TTY to the terminal
+export GPG_TTY=$(tty)
+
+# Define XDG directories
+export XDG_CACHE_HOME=$HOME/.cache
+export XDG_CONFIG_HOME=$HOME/.config
+export XDG_DATA_HOME=$HOME/.local/share
+export XDG_STATE_HOME=$HOME/.local/state
+export XDG_BIN=$HOME/.local/bin
+
+
+# Add XDG_BIN to the PATH
+export PATH="$XDG_BIN:$PATH"
