@@ -5,23 +5,36 @@ if [[ "$(uname)" != "Darwin" && -f "$HOME/.env" ]]; then
     source "$HOME/.env"
 fi
 
+if [[ "$(uname)" == "Darwin" ]]; then
+
+    if ! command -v brew >/dev/null 2>&1; then
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    fi
+    brew update
+    brew upgrade
+    brew install gnupg
+else
+    sudo apt update -y
+    sudo apt upgrade -y
+    sudo apt install gnupg -y
+fi
+
 # Source my zshrc from config
 if ! grep -Fxq 'source "$HOME/.myzshrc"' ~/.zshrc; then
     echo 'source "$HOME/.myzshrc"' >> ~/.zshrc
 fi
 
 
+echo "Updating the yadm repo origin URL"
+yadm remote set-url origin "git@github.com:yj-o/dotfiles.git"
 
-# echo "Updating the yadm repo origin URL"
-# yadm remote set-url origin "git@github.com:yj-o/dotfiles.git"
+echo "add ssh key for github"
+export GPG_TTY=$(tty)
+yadm decrypt
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/gh.key
 
-# echo "add ssh key for github"
-# export GPG_TTY=$(tty)
-# yadm decrypt
-# eval "$(ssh-agent -s)"
-# ssh-add ~/.ssh/gh.key
-
-# echo "add extra repo"
+echo "add extra repo"
 # sudo apt update -y
 
 # echo "install apps..."
