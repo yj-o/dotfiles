@@ -15,3 +15,16 @@ yap() {
     yadm push origin main
 }
 
+yaf() {
+    # Fetch the latest changes from the remote repository
+    yadm fetch origin main
+
+    # Checkout the main branch
+    yadm checkout main
+
+    # Merge the remote main branch with the local main branch
+    yadm merge origin/main
+}
+
+alias ya="yadm"
+alias cd='z'
