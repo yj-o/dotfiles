@@ -30,7 +30,7 @@ ZSH_TMUX_ITERM2="false"
 ZSH_TMUX_CONFIG="~/.config/tmux/tmux.conf"
 
 # Which plugins would you like to load?
-plugins=(common-aliases docker git eza history sudo fzf zoxide tmux fast-syntax-highlighting zsh-autosuggestions) #zsh-autocomplete)
+plugins=(common-aliases docker git eza history sudo fzf zoxide fast-syntax-highlighting zsh-autosuggestions) #zsh-autocomplete)
 
 
 source $ZSH/oh-my-zsh.sh
