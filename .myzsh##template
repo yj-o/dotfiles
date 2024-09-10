@@ -26,11 +26,11 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Would you like to use another custom folder than $ZSH/custom?
 ZSH_CUSTOM="$HOME/.config/zsh"
 
-ZSH_TMUX_ITERM2="false"
-ZSH_TMUX_CONFIG="~/.config/tmux/tmux.conf"
+# ZSH_TMUX_ITERM2="false"
+# ZSH_TMUX_CONFIG="~/.config/tmux/tmux.conf"
 
 # Which plugins would you like to load?
-plugins=(common-aliases docker git eza history sudo fzf zoxide tmux fast-syntax-highlighting zsh-autosuggestions) #zsh-autocomplete)
+plugins=(tmux common-aliases docker git eza history sudo fzf zoxide)# fast-syntax-highlighting zsh-autosuggestions) #zsh-autocomplete)
 
 
 source $ZSH/oh-my-zsh.sh
