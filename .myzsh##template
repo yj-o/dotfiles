@@ -21,11 +21,12 @@ ZSH_THEME=""
 # under VCS as dirty. This makes repository status check for large repositories
 # much, much faster.
 DISABLE_UNTRACKED_FILES_DIRTY="true"
+ZSH_TMUX_CONFIG="~/.config/tmux/tmux.conf"
 
 # Would you like to use another custom folder than $ZSH/custom?
 ZSH_CUSTOM="$HOME/.config/zsh"
 
-# ZSH_TMUX_ITERM2="true"
+ZSH_TMUX_ITERM2="false"
 
 # Which plugins would you like to load?
 plugins=(common-aliases docker git eza history sudo fzf zoxide tmux fast-syntax-highlighting zsh-autosuggestions) #zsh-autocomplete)
