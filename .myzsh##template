@@ -27,7 +27,7 @@ ZSH_THEME=""
 ZSH_CUSTOM="$HOME/.config/zsh"
 
 export ZSH_TMUX_ITERM2="false"
-export ZSH_TMUX_CONFIG="~/.config/tmux/tmux.conf"
+export ZSH_TMUX_CONFIG="$HOME/.config/tmux/tmux.conf"
 
 # Which plugins would you like to load?
 plugins=(tmux common-aliases docker git eza history sudo fzf zoxide)# fast-syntax-highlighting zsh-autosuggestions) #zsh-autocomplete)
