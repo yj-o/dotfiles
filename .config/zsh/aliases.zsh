@@ -29,3 +29,4 @@ yaf() {
 alias ya="yadm"
 alias cd='z'
 alias ex='exit'
+alias spm='./.local/bin/spm.sh'
