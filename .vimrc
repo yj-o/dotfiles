@@ -1,24 +1,27 @@
+" Use the space key as our leader. Put this near the top of your vimrc
+let mapleader = "\<Space>"
+
 " Vundle
 set nocompatible              " be iMproved, required
 filetype off                  " required
 set rtp+=~/.vim/bundle/Vundle.vim
+
 call vundle#begin()
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'christoomey/vim-tmux-navigator'
+call vundle#end()            " required
+filetype plugin indent on    " required
+
+"Insert Mode key
 imap jk <esc>
 imap kj <esc>
 imap <C-s> <esc>:w<cr>
 
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'christoomey/vim-tmux-navigator'
-
-call vundle#end()            " required
-filetype plugin indent on    " required
+"Normal Mode key
+nmap <C-s> :w<cr> " Map Ctrl-s to write the file
 
 
-" Map Ctrl-s to write the file
-nmap <C-s> :w<cr>
 
-" Use the space key as our leader. Put this near the top of your vimrc
-let mapleader = "\<Space>"
 
 set number                      " Display line numbers beside buffer
 set hidden                      " Allow buffer change w/o saving
