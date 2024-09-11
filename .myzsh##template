@@ -27,6 +27,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 ZSH_CUSTOM="$HOME/.config/zsh"
 
 export ZSH_TMUX_ITERM2="false"
+export ZSH_TMUX_AUTONAME_SESSION="true"
 export ZSH_TMUX_CONFIG="$HOME/.config/tmux/tmux.conf"
 
 # Which plugins would you like to load?
@@ -37,9 +38,6 @@ source $ZSH/oh-my-zsh.sh
 
 
 # User configuration
-
-zstyle ':autocomplete:*' default-context history-incremental-search-backward
-zstyle ':autocomplete:*' min-input 3
 
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8

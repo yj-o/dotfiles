@@ -11,7 +11,6 @@ if [ ! -d "$HOME/.local/bin" ]; then
 fi
 
 
-
 # ------------------------------------------------------------------------------------ #
 # Install necessary packages
 if [[ "$(uname)" == "Darwin" ]]; then
@@ -36,7 +35,7 @@ elif command -v apt >/dev/null 2>&1; then
     sudo apt upgrade -y
     sudo apt install zsh
     chsh -s $(which zsh)
-    sudo apt install -y gpg
+    sudo apt install gpg -y
     sudo apt install gnupg -y
     sudo apt install git -y
     sudo apt install curl -y
@@ -81,8 +80,8 @@ fi
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
   git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh
   git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
-#   git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-  git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git $ZSH_CUSTOM/plugins/zsh-autocomplete
+  git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+#   git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git $ZSH_CUSTOM/plugins/zsh-autocomplete
 fi
 
 
@@ -102,14 +101,12 @@ eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/gh.key
 
 
-
 # ------------------------------------------------------------------------------------ #
 # tpm for tmux
 if [ ! -d "$HOME/.config/tmux/plugins" ]; then
     mkdir -p $HOME/.config/tmux/plugins
     git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
 fi
-
 
 # ------------------------------------------------------------------------------------ #
 # vim-plug for vim
@@ -118,6 +115,8 @@ if [! -d "$HOME/.vim/bundle"]; then
     git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 fi
 vim +PluginInstall +qall
+
+
 # echo "install zellij"
 # chmod +x $HOME/.local/install/install_zellij.sh
 # .$HOME/.local/install/install_zellij.sh
