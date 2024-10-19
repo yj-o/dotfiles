@@ -2,9 +2,16 @@
 
 # ------------------------------------------------------------------------------------ #
 # Source environment variables from ~/.env
-if [[ "$(uname)" != "Darwin" && -f "$HOME/.config/env" ]]; then
-    source "$HOME/.config/env"
+# if [[ "$(uname)" != "Darwin" && -f "$HOME/.config/env" ]]; then
+#     source "$HOME/.config/env"
+#     echo "sourcing env"
+# fi
+
+if [ "$(uname)" != "Darwin" ] && [ -f "$HOME/.config/env" ]; then
+    . "$HOME/.config/env"   # Use '.' instead of 'source' for POSIX compliance
+    echo "sourcing env"
 fi
+
 
 if [ ! -d "$HOME/.local/bin" ]; then
     mkdir -p $HOME/.local/bin
@@ -54,7 +61,7 @@ elif command -v apt >/dev/null 2>&1; then
     curl -fLo $HOME/fzf_install https://raw.githubusercontent.com/junegunn/fzf/master/install && chmod a+x $HOME/fzf_install
     ./fzf_install --xdg --no-update-rc --key-bindings --completion --no-zsh
     mv ~/bin/fzf $XDG_BIN
-    rm -d ~/bin
+    rm -rf ~/bin
     rm ~/fzf_install
 
     # Install eza
@@ -81,6 +88,10 @@ fi
 # Source myzsh from ~/.zshrc
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
   git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh
+  if ! grep -Fxq 'source "$HOME/.myzsh"' ~/.zshrc; then
+    echo 'source "$HOME/.myzsh"' >> ~/.zshrc
+  fi
+  zsh
   git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
   git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 #   git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
@@ -89,9 +100,7 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
 fi
 
 
-if ! grep -Fxq 'source "$HOME/.myzsh"' ~/.zshrc; then
-    echo 'source "$HOME/.myzsh"' >> ~/.zshrc
-fi
+
 
 # ------------------------------------------------------------------------------------ #
 # update yadm repo origin URL to use SSH
@@ -115,7 +124,7 @@ fi
 
 # ------------------------------------------------------------------------------------ #
 # vim-plug for vim
-if [! -d "$HOME/.vim/bundle"]; then
+if [ ! -d "$HOME/.vim/bundle" ]; then
     mkdir -p $HOME/.vim/bundle
     git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
     vim +PluginInstall +qall
