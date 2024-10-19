@@ -108,6 +108,7 @@ ssh-add ~/.ssh/gh.key
 if [ ! -d "$HOME/.config/tmux/plugins" ]; then
     mkdir -p $HOME/.config/tmux/plugins
     git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
+    ~/.config/tmux/plugins/tpm/bin/install_plugins
 fi
 
 # ------------------------------------------------------------------------------------ #
@@ -115,7 +116,7 @@ fi
 if [! -d "$HOME/.vim/bundle"]; then
     mkdir -p $HOME/.vim/bundle
     git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-    ~/.config/tmux/plugins/tpm/bin/install_plugins
+    
 fi
 vim +PluginInstall +qall
 
