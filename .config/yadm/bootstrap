@@ -2,8 +2,8 @@
 
 # ------------------------------------------------------------------------------------ #
 # Source environment variables from ~/.env
-if [[ "$(uname)" != "Darwin" && -f "$HOME/.config/.env" ]]; then
-    source "$HOME/.config/.env"
+if [[ "$(uname)" != "Darwin" && -f "$HOME/.config/env" ]]; then
+    source "$HOME/.config/env"
 fi
 
 if [ ! -d "$HOME/.local/bin" ]; then
@@ -81,12 +81,12 @@ fi
 # Source myzsh from ~/.zshrc
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
   git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh
+  git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
+  git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 #   git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
 #   git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 #   git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git $ZSH_CUSTOM/plugins/zsh-autocomplete
 fi
-git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
 
 if ! grep -Fxq 'source "$HOME/.myzsh"' ~/.zshrc; then

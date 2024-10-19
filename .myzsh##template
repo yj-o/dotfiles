@@ -1,6 +1,6 @@
 # Source environment variables from ~/.env
 {% if yadm.os != "Darwin" %}
-source "$HOME/.config/.env"
+source "$HOME/.config/env"
 {% endif %}
 
 # set common environment variables
