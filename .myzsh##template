@@ -24,7 +24,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 
 # Would you like to use another custom folder than $ZSH/custom?
-ZSH_CUSTOM="$HOME/.config/zsh"
+# ZSH_CUSTOM="$HOME/.config/zsh"
 
 export ZSH_TMUX_ITERM2="false"
 export ZSH_TMUX_AUTONAME_SESSION="true"
