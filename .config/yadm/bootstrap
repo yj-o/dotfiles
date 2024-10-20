@@ -1,12 +1,6 @@
 #!/bin/sh
 
 # ------------------------------------------------------------------------------------ #
-# Source environment variables from ~/.env
-# if [[ "$(uname)" != "Darwin" && -f "$HOME/.config/env" ]]; then
-#     source "$HOME/.config/env"
-#     echo "sourcing env"
-# fi
-
 if [ "$(uname)" != "Darwin" ] && [ -f "$HOME/.config/env" ]; then
     . "$HOME/.config/env"   # Use '.' instead of 'source' for POSIX compliance
     echo "sourcing env"
@@ -53,9 +47,10 @@ elif command -v apt >/dev/null 2>&1; then
     sudo apt install vim -y
     
     # Install starship
-    if ! command -v starship &> /dev/null; then
+    if ! command -v starship >/dev/null 2>&1; then
         curl -sS https://starship.rs/install.sh | sh
     fi
+
 
     # Install fzf
     curl -fLo $HOME/fzf_install https://raw.githubusercontent.com/junegunn/fzf/master/install && chmod a+x $HOME/fzf_install
@@ -82,6 +77,8 @@ elif command -v apt >/dev/null 2>&1; then
     curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
     tar xf lazygit.tar.gz lazygit
     sudo install lazygit /usr/local/bin
+    rm ~/lazygit.tar.gz
+    rm ~/lazygit
 fi
 
 # ------------------------------------------------------------------------------------ #
@@ -91,27 +88,28 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
   if ! grep -Fxq 'source "$HOME/.myzsh"' ~/.zshrc; then
     echo 'source "$HOME/.myzsh"' >> ~/.zshrc
   fi
-  zsh
-  git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
-  git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+  git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git $HOME/.config/zsh/plugins/fast-syntax-highlighting
+  git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.config/zsh/plugins/zsh-autosuggestions
 #   git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
 #   git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 #   git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git $ZSH_CUSTOM/plugins/zsh-autocomplete
 fi
 
 
-
-
 # ------------------------------------------------------------------------------------ #
 # update yadm repo origin URL to use SSH
-echo "Updating the yadm repo origin URL"
-yadm remote set-url origin "git@github.com:yj-o/dotfiles.git"
+if [ ! -f "$HOME/.ssh/gh.key" ]; then
+    echo "Updating the yadm repo origin URL"
+    yadm remote set-url origin "git@github.com:yj-o/dotfiles.git"
 
-echo "add ssh key for github"
-export GPG_TTY=$(tty)
-yadm decrypt
-eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/gh.key
+    echo "Adding SSH key for GitHub"
+    export GPG_TTY=$(tty)
+    yadm decrypt
+    eval "$(ssh-agent -s)"
+    ssh-add "$HOME/.ssh/gh.key"
+else
+    echo "SSH key already exists. Skipping setup."
+fi
 
 
 # ------------------------------------------------------------------------------------ #
