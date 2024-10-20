@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 
 # check if an argument is provided
 if [[ $# -eq 0 ]] || { [[ $1 != "full" ]] && [[ $1 != "base" ]]; }; then
