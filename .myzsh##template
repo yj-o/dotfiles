@@ -42,6 +42,11 @@ source $ZSH/oh-my-zsh.sh
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
 
+# Set DISPLAY variable only in SSH sessions
+if [[ -n "$SSH_CONNECTION" ]]; then
+  export DISPLAY=:10.0
+fi
+
 
 # configure fzf
 # Open in tmux popup if on tmux, otherwise use --height mode
