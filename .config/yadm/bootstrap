@@ -131,6 +131,10 @@ if [ ! -d "$HOME/.vim/bundle" ]; then
 fi
 
 
+# ------------------------------------------------------------------------------------ #
+# Install git-extras
+curl -sSL https://raw.githubusercontent.com/tj/git-extras/main/install.sh | sudo bash /dev/stdin
+
 
 # echo "install zellij"
 # chmod +x $HOME/.local/install/install_zellij.sh
