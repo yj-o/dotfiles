@@ -31,7 +31,7 @@ export ZSH_TMUX_AUTONAME_SESSION="true"
 export ZSH_TMUX_CONFIG="$HOME/.config/tmux/tmux.conf"
 
 # Which plugins would you like to load?
-plugins=(tmux common-aliases docker git history sudo eza fzf zoxide fast-syntax-highlighting zsh-autosuggestions) #zsh-autocomplete)
+plugins=(conda-zsh-completion tmux common-aliases docker git history sudo eza fzf zoxide fast-syntax-highlighting zsh-autosuggestions) #zsh-autocomplete)
 
 
 source $ZSH/oh-my-zsh.sh
