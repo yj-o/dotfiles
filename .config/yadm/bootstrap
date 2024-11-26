@@ -90,6 +90,7 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
   if ! grep -Fxq 'source "$HOME/.myzsh"' ~/.zshrc; then
     echo 'source "$HOME/.myzsh"' >> ~/.zshrc
   fi
+  git clone https://github.com/conda-incubator/conda-zsh-completion $HOME/.config/zsh/plugins/conda-zsh-completion
   git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git $HOME/.config/zsh/plugins/fast-syntax-highlighting
   git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.config/zsh/plugins/zsh-autosuggestions
 #   git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
