@@ -57,3 +57,5 @@ alias zzk='zellij delete-session $(zellij ls -s | fzf)'
 alias zzkf='zellij delete-session --force $(zellij ls -s | fzf)'
 alias zzka='zellij delete-all-sessions'
 alias zzkaf='zellij delete-all-sessions --force'
+
+alias fzf="zfzf.sh"
