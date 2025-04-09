@@ -55,11 +55,13 @@ elif command -v apt >/dev/null 2>&1; then
 
 
     # Install fzf
-    curl -fLo $HOME/fzf_install https://raw.githubusercontent.com/junegunn/fzf/master/install && chmod a+x $HOME/fzf_install
-    ./fzf_install --xdg --no-update-rc --key-bindings --completion --no-zsh
-    mv ~/bin/fzf $XDG_BIN
-    rm -rf ~/bin
-    rm ~/fzf_install
+    if ! command -v fzf >/dev/null 2>&1; then
+        curl -fLo $HOME/fzf_install https://raw.githubusercontent.com/junegunn/fzf/master/install && chmod a+x $HOME/fzf_install
+        ./fzf_install --xdg --no-update-rc --key-bindings --completion --no-zsh
+        mv ~/bin/fzf $XDG_BIN
+        rm -rf ~/bin
+        rm ~/fzf_install
+    fi
 
     # Install eza
     if ! command -v eza >/dev/null 2>&1;  then
@@ -72,15 +74,17 @@ elif command -v apt >/dev/null 2>&1; then
     fi
 
     # Install zoxide
-    curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+    if ! command -v z >/dev/null 2>&1;  then
+        curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+    fi
 
     # Install lazygit
-    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
-    curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
-    tar xf lazygit.tar.gz lazygit
-    sudo install lazygit /usr/local/bin
-    rm ~/lazygit.tar.gz
-    rm ~/lazygit
+    # LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+    # curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+    # tar xf lazygit.tar.gz lazygit
+    # sudo install lazygit /usr/local/bin
+    # rm ~/lazygit.tar.gz
+    # rm ~/lazygit
 fi
 
 # ------------------------------------------------------------------------------------ #
@@ -117,11 +121,11 @@ fi
 
 # ------------------------------------------------------------------------------------ #
 # tpm for tmux
-if [ ! -d "$HOME/.config/tmux/plugins" ]; then
-    mkdir -p $HOME/.config/tmux/plugins
-    git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
-    ~/.config/tmux/plugins/tpm/bin/install_plugins
-fi
+# if [ ! -d "$HOME/.config/tmux/plugins" ]; then
+#     mkdir -p $HOME/.config/tmux/plugins
+#     git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
+#     ~/.config/tmux/plugins/tpm/bin/install_plugins
+# fi
 
 # ------------------------------------------------------------------------------------ #
 # vim-plug for vim
@@ -138,7 +142,7 @@ curl -sSL https://raw.githubusercontent.com/tj/git-extras/main/install.sh | sudo
 
 
 # echo "install zellij"
-# chmod +x $HOME/.local/install/install_zellij.sh
-# .$HOME/.local/install/install_zellij.sh
+chmod +x $HOME/.local/install/install_zellij.sh
+.$HOME/.local/install/install_zellij.sh
 
 
