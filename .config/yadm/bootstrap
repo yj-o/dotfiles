@@ -1,9 +1,9 @@
-#!/bin/sh
-
+#!/bin/bash
+echo "--- Update bashrc ---"
 # ------------------------------------------------------------------------------------ #
-if [ "$(uname)" != "Darwin" ] && [ -f "$HOME/.config/env" ]; then
+if [ -f "$HOME/.config/env" ]; then
     . "$HOME/.config/env"   # Use '.' instead of 'source' for POSIX compliance
-    echo "sourcing env"
+    # echo "sourcing env"
 fi
 
 
@@ -12,46 +12,69 @@ if [ ! -d "$HOME/.local/bin" ]; then
 fi
 
 
-# ------------------------------------------------------------------------------------ #
-# Install necessary packages
-if [[ "$(uname)" == "Darwin" ]]; then
-    if ! command -v brew >/dev/null 2>&1; then
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    fi
-    brew update
-    brew upgrade
-    brew install gnupg
-    brew install starship
-    brew install eza
-    brew install zoxide
-    brew install fzf
-    brew install lazygit
-    brew install tmux
-    brew install tio
-    brew install vim
-    brew install --cask font-hack-mono-nerd-font
+# Define the target file.
+BASHRC_FILE="$HOME/.bashrc"
+
+# Define the snippet to add.
+read -r -d '' BASHRC_SNIPPET << 'EOF'
+# If not running interactively, don't do anything
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
+if [ -f ~/.config/bash/bashrc ]; then
+    source ~/.config/bash/bashrc
+fi
+EOF
+
+# If .bashrc exists, prompt the user whether to delete it.
+if [ -f "$BASHRC_FILE" ]; then
+    echo ".bashrc already exists."
+    read -r -p "Do you want to delete the existing .bashrc? (y/N) " response
+    case "$response" in
+        [yY][eE][sS]|[yY])
+            rm -f "$BASHRC_FILE"
+            echo "Deleted the existing .bashrc."
+            ;;
+        *)
+            echo "Keeping the existing .bashrc."
+            ;;
+    esac
+fi
+
+# Make sure .bashrc exists (create an empty one if needed).
+if [ ! -f "$BASHRC_FILE" ]; then
+    touch "$BASHRC_FILE"
+    # echo "Created a new .bashrc file."
+fi
+
+# Append the snippet only if it isn't already present.
+if ! grep -q "If not running interactively" "$BASHRC_FILE"; then
+    echo "$BASHRC_SNIPPET" >> "$BASHRC_FILE"
+    # echo "Appended the bashrc snippet."
+else
+    echo "bashrc snippet already present; nothing to do."
+fi
+
+source ~/.bashrc
 
 # ------------------------------------------------------------------------------------ #
 # if is Debian-based
-elif command -v apt >/dev/null 2>&1; then
+echo "--- Installing packages ---"
+if command -v apt >/dev/null 2>&1; then
     sudo apt update -y
     sudo apt upgrade -y
-    sudo apt install zsh
-    chsh -s $(which zsh)
     sudo apt install gpg -y
     sudo apt install gnupg -y
     sudo apt install git -y
     sudo apt install curl -y
     sudo apt install net-tools -y
-    # sudo apt install tmux -y
-    # sudo apt install tio -y
+    sudo apt install tmux -y
+    sudo apt install tio -y
     sudo apt install vim -y
     sudo apt install wget -y
-    
-    # Install starship
-    if ! command -v starship >/dev/null 2>&1; then
-        curl -sS https://starship.rs/install.sh | sh
-    fi
+    sudo apt install fd-find -y
 
 
     # Install fzf
@@ -78,13 +101,6 @@ elif command -v apt >/dev/null 2>&1; then
         curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
     fi
 
-    # Install lazygit
-    # LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
-    # curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
-    # tar xf lazygit.tar.gz lazygit
-    # sudo install lazygit /usr/local/bin
-    # rm ~/lazygit.tar.gz
-    # rm ~/lazygit
 fi
 
 # ------------------------------------------------------------------------------------ #
@@ -120,12 +136,12 @@ fi
 
 
 # ------------------------------------------------------------------------------------ #
-# tpm for tmux
-# if [ ! -d "$HOME/.config/tmux/plugins" ]; then
-#     mkdir -p $HOME/.config/tmux/plugins
-#     git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
-#     ~/.config/tmux/plugins/tpm/bin/install_plugins
-# fi
+tpm for tmux
+if [ ! -d "$HOME/.config/tmux/plugins" ]; then
+    mkdir -p $HOME/.config/tmux/plugins
+    git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
+    ~/.config/tmux/plugins/tpm/bin/install_plugins
+fi
 
 # ------------------------------------------------------------------------------------ #
 # vim-plug for vim
@@ -139,10 +155,3 @@ fi
 # ------------------------------------------------------------------------------------ #
 # Install git-extras
 curl -sSL https://raw.githubusercontent.com/tj/git-extras/main/install.sh | sudo bash /dev/stdin
-
-
-# echo "install zellij"
-chmod +x $HOME/.local/install/install_zellij.sh
-.$HOME/.local/install/install_zellij.sh
-
-

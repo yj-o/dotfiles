@@ -7,7 +7,14 @@ export XDG_CONFIG_HOME=$HOME/.config
 export XDG_DATA_HOME=$HOME/.local/share
 export XDG_STATE_HOME=$HOME/.local/state
 export XDG_BIN=$HOME/.local/bin
+export XDGC=$HOME/.config
+export XDGB=$HOME/.local/share/bin
 
 
 # Add XDG_BIN to the PATH
 export PATH="$XDG_BIN:$PATH"
+
+
+export EDITOR=vim
+export VISUAL=vim
+export OS=$(uname -s)

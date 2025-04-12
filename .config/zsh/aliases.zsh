@@ -34,28 +34,3 @@ alias pip='pip3'
 alias py='python3'
 alias tcc='tmux -CC'
 alias lg='lazygit'
-
-# zellij
-zz() {
-  if [ "$#" -eq 0 ]; then
-    # No arguments, use 'zellij attach'
-    if [ -z "$ZELLIJ" ]; then
-        zellij attach -c s
-    else
-
-    fi
-  else
-    # Arguments provided, pass them to 'zellij'
-    zellij "$@"
-  fi
-}
-
-alias zza='zellij attach $(zellij ls -s | fzf)'
-alias zzl='zellij ls'
-alias zze='zellij edit'
-alias zzk='zellij delete-session $(zellij ls -s | fzf)'
-alias zzkf='zellij delete-session --force $(zellij ls -s | fzf)'
-alias zzka='zellij delete-all-sessions'
-alias zzkaf='zellij delete-all-sessions --force'
-
-# alias fzf="zfzf.sh"
