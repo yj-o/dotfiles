@@ -1,9 +1,3 @@
-# some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
-
-
 alias v='vim'
 alias reload='source ~/.bashrc'
 alias mx='chmod a+x' # make executable
