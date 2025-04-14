@@ -140,6 +140,8 @@ if command -v apt >/dev/null 2>&1; then
     if ! command -v pixi >/dev/null 2>&1; then
         curl -fsSL https://pixi.sh/install.sh | PIXI_NO_PATH_UPDATE=1 bash
         mkdir -p ~/ros_ws/src
+        export PATH="$HOME/.pixi/bin:$PATH"
+        eval "$(pixi completion --shell bash)"
         cd ~/ros_ws
         pixi install
         cd ~
@@ -212,4 +214,4 @@ fi
 
 # COMPLETE
 echo "Complete bootstrap!!!"
-source ~/.bashrc
+exec bash
