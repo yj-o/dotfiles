@@ -209,3 +209,7 @@ fi
 # ------------------------------------------------------------------------------------ #
 # Install git-extras
 # curl -sSL https://raw.githubusercontent.com/tj/git-extras/main/install.sh | sudo bash /dev/stdin
+
+# COMPLETE
+echo "Complete bootstrap!!!"
+source ~/.bashrc
