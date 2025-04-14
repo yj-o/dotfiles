@@ -30,19 +30,21 @@ __pure_define_color() {
 # #6272A4    | 60   | 4             | Subtle Blue (Not standard)
 
 # Apply with fallbacks
-__pure_define_color RED     203 1
-__pure_define_color GREEN   83  2
-__pure_define_color YELLOW  228 3
-__pure_define_color MAGENTA 141 5
-__pure_define_color CYAN    117 6
-__pure_define_color WHITE   15  7
-__pure_define_color BRIGHT_BLACK 237 0
-__pure_define_color BLACK   235 0
-__pure_define_color ORANGE 215 3
-__pure_define_color PINK   212 5
-__pure_define_color RESET   "$(tput sgr0)" "$(tput sgr0)"
+__pure_define_color RED           203 1
+__pure_define_color GREEN         83  2
+__pure_define_color YELLOW        228 3
+__pure_define_color MAGENTA       141 5
+__pure_define_color CYAN          117 6
+__pure_define_color WHITE         15  7
+__pure_define_color BRIGHT_BLACK  237 0
+__pure_define_color BLACK         235 0
+__pure_define_color ORANGE        215 3
+__pure_define_color PINK          212 5
 
+# For RESET, assign directly without using __pure_define_color
+readonly RESET="$(tput sgr0)"
 
+# The rest of your configuration remains unchanged...
 # Symbols
 pure_prompt_symbol="❯"
 pure_symbol_unpulled="⇣"
@@ -55,7 +57,7 @@ pure_git_async_update=false
 # SSH detection
 pure_ssh_indicator=""
 
-# User color (root: yellow, user: magenta)
+# User color (root: yellow, user: green)
 case ${UID} in
     0) pure_user_color="${YELLOW}" ;;
     *) pure_user_color="${GREEN}" ;;
@@ -114,9 +116,5 @@ PROMPT_COMMAND='
 
 # Prompt construction
 PS1="\n\[${PINK}\]\w \${pure_git_status}\[${RESET}\]\n"
-# PS1+="\[\${pure_prompt_color}\]\${pure_ssh_indicator}${pure_prompt_symbol}\[${RESET}\] "
 PS1+="\[\${pure_prompt_color}\]\${pure_ssh_indicator}${pure_prompt_symbol} \[${WHITE}\]"
-
-
-# Multiline command
 PS2="\[${GREEN}\]${pure_prompt_symbol}\[${RESET}\] "
