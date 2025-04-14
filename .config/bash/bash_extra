@@ -1,0 +1,154 @@
+## --- ROS Bash Plugin --- ##
+alias cdros='cd ~/ros_ws'
+alias edds='vim ~/.config/ros/fastdds_tailscale.xml'
+export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+export FASTRTPS_DEFAULT_PROFILES_FILE=~/.config/ros/fastdds_tailscale.xml
+
+
+## --- eza Bash Plugin --- ##
+alias ls='eza'
+alias l='eza --color=always --color-scale=all --color-scale-mode=gradient --icons=always --group-directories-first'
+alias ll='eza --color=always --color-scale=all --color-scale-mode=gradient --icons=always --group-directories-first -l --git -h'
+alias la='eza --color=always --color-scale=all --color-scale-mode=gradient --icons=always --group-directories-first -a'
+alias lla='eza --color=always --color-scale=all --color-scale-mode=gradient --icons=always --group-directories-first -a -l --git -h'
+
+## --- Zoxide Bash Plugin ---
+if command -v zoxide >/dev/null 2>&1; then
+    init_cmd=$(zoxide init bash)
+    if [ -n "$init_cmd" ]; then
+        eval "$init_cmd"
+		alias cd='z'
+    fi
+fi
+
+
+## --- pixi Bash Plugin --- ##
+if [[ ":$PATH:" != *":$HOME/.pixi/bin:"* ]]; then
+    export PATH="$HOME/.pixi/bin:$PATH"
+fi
+if command -v pixi >/dev/null 2>&1; then
+	eval "$(pixi completion --shell bash)"
+fi
+
+
+## --- fzf Bash Plugin --- ##
+if command -v fzf &> /dev/null; then
+    eval "$(fzf --bash)"
+	export FZF_DEFAULT_COMMAND='fdfind --type f'
+fi
+
+
+# configure fzf theme (dracula + tmux)
+# export FZF_TMUX_OPTS=""
+# Open in tmux popup if on tmux, otherwise use --height mode
+export FZF_DEFAULT_OPTS='--color=fg:#f8f8f2,bg:#282a36,hl:#bd93f9 --color=fg+:#f8f8f2,bg+:#44475a,hl+:#bd93f9 --color=info:#ffb86c,prompt:#50fa7b,pointer:#ff79c6 --color=marker:#ff79c6,spinner:#ffb86c,header:#6272a4 --height 40% --tmux bottom,40% --layout reverse --border top'
+# Open in tmux popup if on tmux, otherwise use --height mode
+# export FZF_DEFAULT_OPTS='--height 40% --tmux bottom,40% --layout reverse --border top'
+
+## --- git Bash Plugin --- ##
+git-replace() {
+    local branch=${1:-$(git rev-parse --abbrev-ref HEAD)} || return 1
+
+    echo "⚠️  This will discard ALL local changes and reset '$branch' to origin/$branch"
+    read -p "Continue? [y/N] " confirm
+    if [[ $confirm == [yY] ]]; then
+        git fetch && git reset --hard origin/"$branch"
+    else
+        echo "Aborted."
+    fi
+}
+
+
+## --- yadm Bash Plugin --- ##
+yadm-save() {
+    # Stage all tracked changes
+    yadm add -u :/
+
+    # Use commit message if provided, else default to "."
+    local msg="${1:-.}"
+    yadm commit -m "$msg"
+
+    # Determine target branch: use second argument if given, otherwise use current branch
+    local branch="${2:-$(yadm rev-parse --abbrev-ref HEAD)}"
+
+    # Push to remote
+    yadm push origin "$branch"
+}
+
+
+yadm-replace() {
+    local branch=${1:-$(yadm rev-parse --abbrev-ref HEAD)} || return 1
+
+    echo "⚠️  This will discard ALL local changes and reset '$branch' to origin/$branch"
+    read -p "Continue? [y/N] " confirm
+    if [[ $confirm == [yY] ]]; then
+        yadm fetch && yadm reset --hard origin/"$branch"
+    else
+        echo "Aborted."
+    fi
+}
+
+## --- sudo_command_line --- ##
+sudo_command_line() {
+  # Toggle sudo on the current or previous command.
+  # If the command line is empty, grab the last command from history.
+  if [[ ${#READLINE_LINE} -eq 0 ]]; then
+    READLINE_LINE=$(fc -ln -1 | xargs)
+  fi
+
+  # If the command already starts with 'sudo ', remove it; otherwise, add 'sudo '.
+  if [[ $READLINE_LINE == sudo\ * ]]; then
+    READLINE_LINE="${READLINE_LINE#sudo }"
+  else
+    READLINE_LINE="sudo $READLINE_LINE"
+  fi
+
+  # Update the cursor to the end of the line.
+  READLINE_POINT=${#READLINE_LINE}
+}
+
+# Readline library requires bash version 4 or later
+if [ "${BASH_VERSINFO[0]}" -ge 4 ]; then
+	bind -x '"\e\e": sudo_command_line'
+fi
+
+
+## --- tmux Bash Plugin --- ##
+alias tt='tat'
+
+if [ -n "$TMUX" ]; then
+    alias fzf="fzf-tmux"
+fi
+
+
+# tmux session utilities
+
+# Function to attach to a tmux session with fzf selection
+ta() {
+  # List tmux sessions, use fzf to pick one, and extract the session name
+  session=$(tmux ls 2>/dev/null | fzf --prompt="Select session to attach: " | awk -F: '{print $1}')
+  if [ -n "$session" ]; then
+    tmux attach -t "$session"
+  else
+    echo "No session selected."
+  fi
+}
+
+# Function to kill a tmux session with fzf selection
+tks() {
+  # List tmux sessions, use fzf to pick one, and extract the session name
+  session=$(tmux ls 2>/dev/null | fzf --prompt="Select session to kill: " | awk -F: '{print $1}')
+  if [ -n "$session" ]; then
+    tmux kill-session -t "$session"
+  else
+    echo "No session selected."
+  fi
+}
+
+# Alias to kill the entire tmux server (kills all sessions)
+tka() {
+  tmux kill-server
+}
+
+# Alias to list tmux sessions
+alias tl='tmux list-sessions'

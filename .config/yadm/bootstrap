@@ -84,6 +84,8 @@ if command -v apt >/dev/null 2>&1; then
         mv ~/bin/fzf $XDG_BIN
         rm -rf ~/bin
         rm ~/fzf_install
+        curl -fLo ~/.local/bin/fzf-tmux --create-dirs https://raw.githubusercontent.com/junegunn/fzf/master/bin/fzf-tmux
+        chmod +x ~/.local/bin/fzf-tmux
     fi
 
     # Install eza
@@ -97,26 +99,33 @@ if command -v apt >/dev/null 2>&1; then
     fi
 
     # Install zoxide
-    if ! command -v z >/dev/null 2>&1;  then
+    if ! command -v zoxide >/dev/null 2>&1;  then
         curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+    fi
+
+    # Install pipx
+    if ! command -v pixi >/dev/null 2>&1; then
+        curl -fsSL https://pixi.sh/install.sh | PIXI_NO_PATH_UPDATE=1 bash
     fi
 
 fi
 
 # ------------------------------------------------------------------------------------ #
-# Source myzsh from ~/.zshrc
-if [ ! -d "$HOME/.oh-my-zsh" ]; then
-  git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh
-  if ! grep -Fxq 'source "$HOME/.myzsh"' ~/.zshrc; then
-    echo 'source "$HOME/.myzsh"' >> ~/.zshrc
-  fi
-  git clone https://github.com/conda-incubator/conda-zsh-completion $HOME/.config/zsh/plugins/conda-zsh-completion
-  git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git $HOME/.config/zsh/plugins/fast-syntax-highlighting
-  git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.config/zsh/plugins/zsh-autosuggestions
-#   git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
-#   git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-#   git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git $ZSH_CUSTOM/plugins/zsh-autocomplete
-fi
+# # Source myzsh from ~/.zshrc
+# if [ ! -d "$HOME/.oh-my-zsh" ]; then
+#   git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh
+#   if ! grep -Fxq 'source "$HOME/.myzsh"' ~/.zshrc; then
+#     echo 'source "$HOME/.myzsh"' >> ~/.zshrc
+#   fi
+#   git clone https://github.com/conda-incubator/conda-zsh-completion $HOME/.config/zsh/plugins/conda-zsh-completion
+#   git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git $HOME/.config/zsh/plugins/fast-syntax-highlighting
+#   git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.config/zsh/plugins/zsh-autosuggestions
+# #   git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
+# #   git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+# #   git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git $ZSH_CUSTOM/plugins/zsh-autocomplete
+# fi
+
+
 
 
 # ------------------------------------------------------------------------------------ #
@@ -136,7 +145,7 @@ fi
 
 
 # ------------------------------------------------------------------------------------ #
-tpm for tmux
+# tpm for tmux
 if [ ! -d "$HOME/.config/tmux/plugins" ]; then
     mkdir -p $HOME/.config/tmux/plugins
     git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
@@ -144,14 +153,14 @@ if [ ! -d "$HOME/.config/tmux/plugins" ]; then
 fi
 
 # ------------------------------------------------------------------------------------ #
-# vim-plug for vim
-if [ ! -d "$HOME/.vim/bundle" ]; then
-    mkdir -p $HOME/.vim/bundle
-    git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-    vim +PluginInstall +qall
-fi
+# # vim-plug for vim
+# if [ ! -d "$HOME/.vim/bundle" ]; then
+#     mkdir -p $HOME/.vim/bundle
+#     git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+#     vim +PluginInstall +qall
+# fi
 
 
 # ------------------------------------------------------------------------------------ #
 # Install git-extras
-curl -sSL https://raw.githubusercontent.com/tj/git-extras/main/install.sh | sudo bash /dev/stdin
+# curl -sSL https://raw.githubusercontent.com/tj/git-extras/main/install.sh | sudo bash /dev/stdin

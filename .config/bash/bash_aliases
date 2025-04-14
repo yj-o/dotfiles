@@ -1,0 +1,19 @@
+# some more ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+
+alias v='vim'
+alias reload='source ~/.bashrc'
+alias mx='chmod a+x' # make executable
+alias rmd='/bin/rm  --recursive --force --verbose ' # Remove a directory and all files
+
+alias fd=fdfind
+# if command -v fdfind >/dev/null 2>&1 && ! command -v fd >/dev/null 2>&1; then
+#     alias fd=fdfind
+# fi
+
+alias ya="yadm"
+alias ex='exit'
+alias spm='./.local/bin/spm.sh'

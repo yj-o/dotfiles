@@ -1,0 +1,122 @@
+#!/bin/bash
+
+# Determine if terminal supports 256 colors
+if [[ "$(tput colors)" -ge 256 ]]; then
+    __PURE_TERM_256=true
+else
+    __PURE_TERM_256=false
+fi
+
+__pure_define_color() {
+    local name=$1 color_256=$2 color_basic=$3
+    if [[ "$__PURE_TERM_256" == true ]]; then
+        [[ -z "${!name}" ]] && readonly "$name"="$(tput setaf "$color_256")"
+    else
+        [[ -z "${!name}" ]] && readonly "$name"="$(tput setaf "$color_basic")"
+    fi
+}
+
+# Dracula Color Mapping
+# Hex        | 256  | 8/16 fallback | Description
+# ---------- | ---- | ------------- | -----------
+# #FF5555    | 203  | 1             | Red
+# #50FA7B    | 83   | 2             | Green
+# #F1FA8C    | 228  | 3             | Yellow
+# #BD93F9    | 141  | 5             | Purple
+# #8BE9FD    | 117  | 6             | Cyan
+# #F8F8F2    | 15   | 7             | White (bright)
+# #44475A    | 237  | 0             | Comment / Line
+# #282A36    | 235  | 0             | Background
+# #6272A4    | 60   | 4             | Subtle Blue (Not standard)
+
+# Apply with fallbacks
+__pure_define_color RED     203 1
+__pure_define_color GREEN   83  2
+__pure_define_color YELLOW  228 3
+__pure_define_color MAGENTA 141 5
+__pure_define_color CYAN    117 6
+__pure_define_color WHITE   15  7
+__pure_define_color BRIGHT_BLACK 237 0
+__pure_define_color BLACK   235 0
+__pure_define_color ORANGE 215 3
+__pure_define_color PINK   212 5
+__pure_define_color RESET   "$(tput sgr0)" "$(tput sgr0)"
+
+
+# Symbols
+pure_prompt_symbol="❯"
+pure_symbol_unpulled="⇣"
+pure_symbol_unpushed="⇡"
+pure_symbol_dirty="*"
+
+# Configuration
+pure_git_async_update=false
+
+# SSH detection
+pure_ssh_indicator=""
+
+# User color (root: yellow, user: magenta)
+case ${UID} in
+    0) pure_user_color="${YELLOW}" ;;
+    *) pure_user_color="${GREEN}" ;;
+esac
+
+__pure_check_ssh() {
+    if [[ -n "${SSH_CLIENT}" || -n "${SSH_TTY}" || -n "${SSH_CONNECTION}" ]]; then
+        pure_ssh_indicator="󰣀"
+    else
+        pure_ssh_indicator=""
+    fi
+}
+
+__pure_git_remote_status() {
+    local status_output=$(git status --porcelain=2 --branch 2>/dev/null)
+    local unpulled=0 unpushed=0 symbols=""
+
+    if [[ $status_output =~ branch.ab.*\+([0-9]+)\ \-([0-9]+) ]]; then
+        unpushed=${BASH_REMATCH[1]}
+        unpulled=${BASH_REMATCH[2]}
+    fi
+
+    (( unpulled > 0 )) && symbols+="\[${RED}\]${pure_symbol_unpulled}\[${RESET}\]"
+    (( unpushed > 0 )) && symbols+="\[${ORANGE}\]${pure_symbol_unpushed}\[${RESET}\]"
+    echo -n "$symbols"
+}
+
+__pure_update_git_status() {
+    pure_git_status=""
+    if ! git rev-parse --is-inside-work-tree &>/dev/null; then return; fi
+
+    local current_branch=$(git branch --show-current 2>/dev/null || echo "(detached)")
+    local dirty="" remote_status=""
+    
+    git diff --quiet 2>/dev/null || dirty="${pure_symbol_dirty}"
+    [[ $(git remote | wc -l) -gt 0 ]] && remote_status=$(__pure_git_remote_status)
+    
+    pure_git_status="\[${BRIGHT_BLACK}\]${current_branch}${dirty}\[${RESET}\] ${remote_status}"
+}
+
+__pure_update_prompt_color() {
+    if [[ $1 -eq 0 ]]; then
+        pure_prompt_color="${pure_user_color}"
+    else
+        pure_prompt_color="${RED}"
+    fi
+}
+
+PROMPT_COMMAND='
+    exit_status=$?
+    __pure_check_ssh
+    __pure_update_git_status
+    __pure_update_prompt_color $exit_status
+    unset exit_status
+'
+
+# Prompt construction
+PS1="\n\[${PINK}\]\w \${pure_git_status}\[${RESET}\]\n"
+# PS1+="\[\${pure_prompt_color}\]\${pure_ssh_indicator}${pure_prompt_symbol}\[${RESET}\] "
+PS1+="\[\${pure_prompt_color}\]\${pure_ssh_indicator}${pure_prompt_symbol} \[${WHITE}\]"
+
+
+# Multiline command
+PS2="\[${GREEN}\]${pure_prompt_symbol}\[${RESET}\] "

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # List available serial devices based on OS
 if [[ "$OS" == "Linux" ]]; then
