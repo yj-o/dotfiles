@@ -1,0 +1,71 @@
+[project]
+name = "robostack-dev"
+version = "0.1.0"
+description = "Development environment with RoboStack ROS packages"
+authors = ["YJ"]
+channels = ["robostack-staging", "conda-forge"]
+platforms = ["linux-64", "osx-64", "osx-arm64", "linux-aarch64"]
+
+
+[target.linux.dependencies]
+libgl-devel = "*"
+
+[dependencies]
+python = "*"
+compilers = "*"
+cmake = "*"
+pkg-config = "*"
+make = "*"
+ninja = "*"
+colcon-common-extensions = ">=0.3.0,<0.4"
+
+ros-humble-desktop = "*"
+ros-humble-gazebo-ros-pkgs = "*"
+# ros-humble-ros-base = "*"
+
+ros-humble-demo-nodes-py = "*"
+ros-humble-nav2-msgs  = "*"
+ros-humble-robot-localization = "*"
+ros-humble-robot-state-publisher = "*"
+ros-humble-xacro = "*"
+ros-humble-foxglove-bridge = "*"
+
+rosdep = "*"
+numpy = "*"
+pandas = "*"
+pyserial = "*"
+setuptools = "<=58.2.0"
+
+[pypi-dependencies]
+nicegui = "*"
+
+[activation]
+scripts = ["install/setup.sh"]
+
+[tasks]
+talker = "ros2 run demo_nodes_py talker"
+listener = "ros2 run demo_nodes_py listener"
+build = {cmd = "colcon build --symlink-install", inputs = ["src"]}
+fox = "ros2 launch foxglove_bridge foxglove_bridge_launch.xml"
+
+[tasks.state]
+args = [
+  { "arg" = "sim_robot", "default" = "false" },
+]
+cmd = "ros2 launch agbot_bringup agbot_publisher.launch.py sim_robot:={{ sim_robot }}"
+
+
+
+
+
+# sim = "ros2 run turtlesim turtlesim_node"
+# hello = { cmd = "ros2 run my_package my_node", depends-on = ["build"] }
+
+# test = {args = ["name"], cmd = "echo Hello, {{ name }}!"}
+
+# [tasks.test2]
+# args = [
+#   { "arg" = "project", "default" = "my-app" },
+#   { "arg" = "mode", "default" = "development" },
+# ]
+# cmd = "echo Building {{ project }} in {{ mode }} mode"
