@@ -1,0 +1,110 @@
+#!/bin/bash
+# Copyright (c) 2020-2021 Benjamin Holt -- MIT License
+
+set -e  # Stop-on-error
+# set -x  # Uncomment for debugging
+
+if [ "$1" == "-h" -o "$1" == "--help" ]; then
+    cat <<USAGE
+Usage:  git save    Show short status, a message saying whether it will
+                    automatically add changed files or just staged changes,
+                    and prompt for an optional short commit message.  If no
+                    message is given, git will open your default editor for
+                    a long-form message.  ^C at the prompt to cancel.
+        git send    After saving as above, automatically pull with rebase
+                    and autostash, then push.
+Options:
+        -a|--all    Add all changed files (like 'commit -a') even if there
+                    are staged changes; note that this can be given
+                    "retroactively" at the message prompt.
+        -m|--message MESSAGE
+                    Don't show status or prompt, just do the commit with
+                    the given message
+        -h|--help   Print this message and exit
+Environment:
+    GitSaveCheckPattern  Grep pattern to search for in the diff; defaults
+                         to NOCOMMIT.  Note that even unstaged changes are
+                         checked.
+
+USAGE
+    exit 0
+fi
+
+Bold=`tput bold`
+Off=`tput sgr0`
+
+: ${GitSaveCheckPattern:="NOCOMMIT"}
+
+AddFlag=""
+if [ "$1" == "-a" -o "$1" == "--all" ]; then
+    AddFlag="$1"
+    shift
+fi
+
+if [ -n "$1" ] && ! [ "$1" == "-m" -o "$1" == "--message" ]; then
+    echo "Unknown option $1, run 'git send -h|--help' for usage"
+    exit 1
+fi
+
+Message=""
+if [ "$1" == "-m" -o "$1" == "--message" ]; then
+    shift
+    Message="$*"
+fi
+
+if [ -z "$Message" ]; then
+    git status -s
+    sleep 0.1  # HACK: prompt sometimes comes out out-of-order
+    if [ -n "$AddFlag" ] || git diff-index --cached --quiet --ignore-submodules HEAD --; then
+        echo "${Bold}Will add changed files${Off} (but not untracked files)"
+    else
+        echo "${Bold}Only sending staged changes${Off} (-a MESSAGE to add changed files too)"
+    fi
+
+    # Check for lines marked NOCOMMIT
+    if [ -n "$GitSaveCheckPattern" ]; then
+        git diff HEAD | grep "$GitSaveCheckPattern" \
+            && echo "${Bold}ALERT!${Off} Found lines matching the check pattern ($GitSaveCheckPattern)" \
+            || true
+    fi
+
+    echo "${Bold}Enter a message${Off} (no message to open editor, ^C to cancel)"
+    sleep 0.1
+    read -p "${Bold}>${Off} " Message
+    Message=`echo "$Message" | sed -e 's/^ *//' -e 's/ *$//'`
+    # Handle ex-post-facto -a
+    StartsWith=`echo "$Message" | cut -d ' ' -f 1`
+    if [ "$StartsWith" == "-a" -o "$StartsWith" == "--all" ]; then
+        AddFlag="$StartsWith"
+        Message=`echo "$Message" | sed -e "s/^$StartsWith *//"`
+    fi
+fi
+
+if [ -n "$AddFlag" ] || git diff-index --cached --quiet --ignore-submodules HEAD --; then
+    echo "${Bold}Adding changed files...${Off}"
+    git add -u  # No staged changes, add unstaged files
+fi
+
+sleep 0.1
+echo "${Bold}Committing...${Off}"
+if [ -n "$Message" ]; then
+    git commit -m "$Message"
+else
+    git commit
+fi
+
+CalledAs=`basename "$0"`
+if [ "$CalledAs" == "git-send" ]; then
+    sleep 0.1
+    echo "${Bold}Pulling...${Off}"
+    git pull -r --autostash
+
+    sleep 0.1
+    echo "${Bold}Pushing...${Off}"
+    git push
+fi
+
+sleep 0.1
+echo "${Bold}Done.${Off}"
+
+###
