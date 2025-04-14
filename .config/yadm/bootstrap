@@ -12,6 +12,39 @@ if [ ! -d "$HOME/.local/bin" ]; then
 fi
 
 
+# ------------------------------------------------------------------------------------ #
+# Check if running on a Raspberry Pi by checking the CPU architecture
+# Check if running on a Raspberry Pi by verifying the device model
+if [ -f /proc/device-tree/model ] && grep -qi "raspberry pi" /proc/device-tree/model; then
+    echo "Running on Raspberry Pi – proceeding with configuration."
+
+    # Ensure the ~/.gnupg directory exists
+    mkdir -p ~/.gnupg
+
+    # Define the configuration snippet to add
+    read -r -d '' GPG_CONF << 'EOF'
+pinentry-program /usr/bin/pinentry-curses
+allow-preset-passphrase
+default-cache-ttl 600
+max-cache-ttl 7200
+EOF
+
+    # Append the configuration to gpg-agent.conf if not already present
+    CONFIG_FILE=~/.gnupg/gpg-agent.conf
+    if ! grep -q "pinentry-program /usr/bin/pinentry-curses" "$CONFIG_FILE" 2>/dev/null; then
+        echo "$GPG_CONF" >> "$CONFIG_FILE"
+        echo "Appended GPG configuration to $CONFIG_FILE"
+    else
+        echo "GPG configuration already exists in $CONFIG_FILE"
+    fi
+
+    # Reload the GPG agent to apply the changes
+    gpg-connect-agent reloadagent /bye
+    echo "GPG agent reloaded"
+fi
+# ------------------------------------------------------------------------------------ #
+
+
 # Define the target file.
 BASHRC_FILE="$HOME/.bashrc"
 
@@ -106,8 +139,20 @@ if command -v apt >/dev/null 2>&1; then
     # Install pipx
     if ! command -v pixi >/dev/null 2>&1; then
         curl -fsSL https://pixi.sh/install.sh | PIXI_NO_PATH_UPDATE=1 bash
+        mkdir -p ~/ros_ws/src
+        cd ~/ros_ws
+        pixi install
+        cd ~
     fi
 
+    # Install tailscale
+    if ! command -v tailscale >/dev/null 2>&1; then
+        sudo apt-get install apt-transport-https -y
+        curl -fsSL https://pkgs.tailscale.com/stable/raspbian/bullseye.noarmor.gpg | sudo tee /usr/share/keyrings/tailscale-archive-keyring.gpg > /dev/null
+        curl -fsSL https://pkgs.tailscale.com/stable/raspbian/bullseye.tailscale-keyring.list | sudo tee /etc/apt/sources.list.d/tailscale.list
+        sudo apt-get update -y
+        sudo apt-get install tailscale -y
+    fi
 fi
 
 # ------------------------------------------------------------------------------------ #
