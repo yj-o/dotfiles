@@ -22,13 +22,18 @@
                     </locator>
                     <locator>
                         <udpv4>
+                            <address>agbot-sim</address> <!-- or <address>Tailscale IPv4 address</address> -->
+                        </udpv4>
+                    </locator>
+                    <locator>
+                        <udpv4>
                             <address>agbot-sensor</address> <!-- or <address>Tailscale IPv4 address</address> -->
                         </udpv4>
                     </locator>
                     <!-- End repeat -->
                     <locator>
                         <udpv4>
-                            <address>ros-dev</address> 
+                            <address>macbook</address> 
                         </udpv4>
                     </locator>
                 </initialPeersList>
