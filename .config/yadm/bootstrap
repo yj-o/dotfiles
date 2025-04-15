@@ -136,17 +136,6 @@ if command -v apt >/dev/null 2>&1; then
         curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
     fi
 
-    # Install pipx
-    if ! command -v pixi >/dev/null 2>&1; then
-        curl -fsSL https://pixi.sh/install.sh | PIXI_NO_PATH_UPDATE=1 bash
-        mkdir -p ~/ros_ws/src
-        export PATH="$HOME/.pixi/bin:$PATH"
-        eval "$(pixi completion --shell bash)"
-        cd ~/ros_ws
-        pixi install
-        cd ~
-    fi
-
     # Install tailscale
     if ! command -v tailscale >/dev/null 2>&1; then
         sudo apt-get install apt-transport-https -y
