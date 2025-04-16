@@ -150,8 +150,8 @@ if command -v apt >/dev/null 2>&1; then
         curl -fsSL https://pixi.sh/install.sh | PIXI_NO_PATH_UPDATE=1 bash
         mkdir -p ~/ros_ws/src
         mkdir -p ~/ros_ws/install
-        if [ ! -f "~/install/setup.bash" ]; then
-            touch "~/install/setup.bash"
+        if [ ! -f "~/ros_ws/install/setup.bash" ]; then
+            touch "~/ros_ws/install/setup.bash"
         fi
     echo "File '$file' created."
         export PATH="$HOME/.pixi/bin:$PATH"
