@@ -3,6 +3,9 @@ alias px='pixi'
 alias reload='source ~/.bashrc'
 alias mx='chmod a+x' # make executable
 alias rmd='/bin/rm  --recursive --force --verbose ' # Remove a directory and all files
+alias eenv='vim ~/.config/env' # Edit the env file
+alias ebros='vim ~/.config/bash/bash_ros' # Edit the bash_ros file
+alias myhelp='less ~/readme.md' # Show the help file
 
 alias fd=fdfind
 # if command -v fdfind >/dev/null 2>&1 && ! command -v fd >/dev/null 2>&1; then

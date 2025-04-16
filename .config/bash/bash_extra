@@ -1,8 +1,5 @@
 ## --- ROS Bash Plugin --- ##
-alias cdros='cd ~/ros_ws'
-alias edds='vim ~/.config/ros/fastdds_tailscale.xml'
-export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
-export FASTRTPS_DEFAULT_PROFILES_FILE=~/.config/ros/fastdds_tailscale.xml
+source ~/.config/bash/bash_ros
 
 
 ## --- eza Bash Plugin --- ##

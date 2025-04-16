@@ -35,6 +35,8 @@ numpy = "*"
 pandas = "*"
 pyserial = "*"
 setuptools = "<=58.2.0"
+pillow = ">=11.1.0,<12"
+ros-humble-vision-msgs = ">=4.1.1,<5"
 
 [pypi-dependencies]
 nicegui = "*"

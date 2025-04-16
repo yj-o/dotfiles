@@ -7,6 +7,9 @@
 - `Ctrl+A`                         Move the cursor to the beginning of the line.
 - `Ctrl+E`                         Move the cursor to the end of the line.
 - `ESC ESC`                        Prepend sudo to the current/last command.
+- `eenv`                           Edit env variables.
+- `ebros`                          Edit ros alias, env and sources.
+- `myhelp`                         read this readme file in cli.
 
 ## Misc
 - `v`                       Open Vim  

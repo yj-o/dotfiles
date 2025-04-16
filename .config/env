@@ -20,3 +20,5 @@ export PATH="$XDG_BIN:$PATH"
 export EDITOR=vim
 export VISUAL=vim
 export OS=$(uname -s)
+
+export ROSWS=$HOME/ros_ws
