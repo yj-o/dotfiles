@@ -1,0 +1,9 @@
+alias cdros='cd ~/ros_ws'
+# alias edds='vim ~/.config/ros/fastdds_tailscale.xml'
+alias edds='vim vim $FASTRTPS_DEFAULT_PROFILES_FILE'
+
+export WEBOTS_SHARED_FOLDER=/Users/wyj/OrbStack/ros-dev/home/wyj/.webot_share:~/.webot_share
+# export WEBOTS_SHARED_FOLDER=/Users/wyj/OrbStack/ros-dev/home/wyj/.webot_share:/home/wyj/.webot_share
+
+export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+export FASTRTPS_DEFAULT_PROFILES_FILE=~/ros_ws/fastdds_tailscale.xml
