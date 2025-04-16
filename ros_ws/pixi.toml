@@ -19,9 +19,9 @@ make = "*"
 ninja = "*"
 colcon-common-extensions = ">=0.3.0,<0.4"
 
-ros-humble-desktop = "*"
-ros-humble-gazebo-ros-pkgs = "*"
-# ros-humble-ros-base = "*"
+# ros-humble-desktop = "*"
+# ros-humble-gazebo-ros-pkgs = "*"
+ros-humble-ros-base = "*"
 
 ros-humble-demo-nodes-py = "*"
 ros-humble-nav2-msgs  = "*"
